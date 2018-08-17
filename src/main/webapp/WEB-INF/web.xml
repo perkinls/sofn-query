@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         id="WebApp_ID" version="3.1">
+  <display-name>sofn-query</display-name>
+
+
+
+  <!-- 部署springmvc的资源文件路径配置 -->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <!-- 找到所有的以spring-打头的spring配置文件 -->
+    <param-value>classpath:spring/spring-*.xml</param-value>
+  </context-param>
+  <!-- 监听器：在tomcat启动的时候，根据上面找到的springmvc的资源文件，自动加载spring容器 -->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <!-- 前端控制器 -->
+  <servlet>
+    <servlet-name>spring-mvc</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:spring/spring-*.xml</param-value>
+    </init-param>
+    <!-- tomcat启动自动执行 -->
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>spring-mvc</servlet-name>
+    <!-- /表示springmvc会拦截所有请求 -->
+    <!-- 同时静态资源也会被拦截 -->
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+  <!-- 配置编码 使用spring自带的解决乱码的配置 -->
+  <filter>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+</web-app>

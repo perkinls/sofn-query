@@ -13,4 +13,15 @@ public class HelloWeb {
     public String index(){
         return "index";
     }
+
+    @RequestMapping("advanced")
+    public String advanced(){
+        return "advanced";
+    }
+
+    @RequestMapping("result")
+    public String result(){
+        return "result";
+    }
+
 }

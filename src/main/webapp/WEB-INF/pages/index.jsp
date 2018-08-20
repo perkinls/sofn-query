@@ -17,58 +17,25 @@
         	<h1 class="title">
             	<div class="logo large"></div>
             </h1>
-            <div class="nav ue-clear">
-            	<ul class="searchList">
-                    <li class="searchItem current">资讯</li>
-                    <li class="searchItem">设计</li>
-                    <li class="searchItem">网页</li>
-                    <li class="searchItem">知道</li>
-                    <li class="searchItem">音乐</li>
-                    <li class="searchItem">图片</li>
-                    <li class="searchItem">视频</li>
-                    <li class="searchItem">地图</li>
-                    <li class="searchItem">百科</li>
-                    <li class="searchItem">文库</li>
-                </ul>
-            </div>
+
             <div class="inputArea">
             	<input type="text" class="searchInput" />
-                <input type="button" class="searchButton" onclick="javascript:window.location='result.jsp'" />
-                <a class="advanced" href=".${pageContext.request.contextPath}/WEB-INF/pages/advanced.jsp">高级搜索</a>
+                <input type="button" class="searchButton" onclick="javascript:window.location='/result'" />
+                <a class="advanced" href="/advanced">高级搜索</a>
                 <ul class="dataList">
-                	<li>如何学好设计</li>
+                	<li>追溯码查询</li>
                     <li>界面设计</li>
-                    <li>UI设计培训要多少钱</li>
+                    <li>xxxxxx</li>
                     <li>设计师学习</li>
                     <li>哪里有好的网站</li>
                 </ul>
-            </div>
-            
-            <div class="historyArea">
-            	<p class="history">
-                	<label>热门搜索：</label>
-                    <a href="javascript:;">UI设计</a>
-                    <a href="javascript:;">界面设计</a>
-                    <a href="javascript:;">手机界面</a>
-                    <a href="javascript:;">交互</a>
-                    <a href="javascript:;">图标</a>
-                    <a href="javascript:;">UI素材</a>
-                    <a href="javascript:;">教程</a>
-                </p>
-                <p class="history">
-                	<label>我的搜索：</label>
-                    <a href="javascript:;">专注界面设计网站</a>
-                    <a href="javascript:;">用户体验</a>
-                    <a href="javascript:;">互联网</a>
-                    <a href="javascript:;">资费套餐</a>
-                </p>
             </div>
         </div><!-- End of main -->
     </div><!--End of bd-->
     
     <div class="foot">
     	<div class="wrap">
-            <div class="copyright">Copyright &copy;uimaker.com 版权所有  E-mail:admin@uimaker.com</div>
+            <div class="copyright">Copyright &copy;xxxxxxx.com 版权所有  E-mail:admin@uimaker.com</div>
         </div>
     </div>
 </div>

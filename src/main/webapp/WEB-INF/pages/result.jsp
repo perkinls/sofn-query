@@ -12,125 +12,16 @@
 </head>
 <body>
 <div id="container">
-	<div id="hd" class="ue-clear">
+	<div id="hd" class="ue-clear" st>
     	<div class="logo"></div>
         <div class="inputArea">
         	<input type="text" class="searchInput" />
             <input type="button" class="searchButton" />
-            <a class="advanced" href="${pageContext.request.contextPath}/WEB-INF/pages/advanced.html">高级搜索</a>
+            <a class="advanced" href="/advanced">高级搜索</a>
         </div>
-    </div>
-    <div class="nav">
-    	<ul class="searchList">
-            <li class="searchItem current">资讯</li>
-            <li class="searchItem">设计</li>
-            <li class="searchItem">网页</li>
-            <li class="searchItem">知道</li>
-            <li class="searchItem">音乐</li>
-            <li class="searchItem">图片</li>
-            <li class="searchItem">视频</li>
-            <li class="searchItem">地图</li>
-            <li class="searchItem">百科</li>
-            <li class="searchItem">文库</li>
-        </ul>
-        <a href="javascript:;" class="tips">什么是分类搜索</a>
     </div>
 	<div id="bd" class="ue-clear">
         <div id="main">
-        	<div class="sideBar">
-            	<div class="subfield">设计分类</div>
-                <ul class="subfieldContext">
-                	<li>
-                    	<span class="name">后台界面</span>
-                        <span class="unit">(9862)</span>
-                    </li>
-                    <li>
-                    	<span class="name">图标</span>
-                        <span class="unit">(485)</span>
-                    </li>
-                    <li>
-                    	<span class="name">自定义</span>
-                        <span class="unit">(1564)</span>
-                    </li>
-                    <li>
-                    	<span class="name">UI设计</span>
-                        <span class="unit">(485)</span>
-                    </li>
-                    <li>
-                    	<span class="name">游戏界面</span>
-                        <span class="unit">(485)</span>
-                    </li>
-                    <li class="more">
-                    	<a href="javascript:;">
-                        	<span class="text">更多</span>
-                        	<i class="moreIcon"></i>
-                        </a>
-                    </li>
-                </ul>
-                <div class="subfield">发布时间</div>
-                <ul class="subfieldContext">
-                	<li>
-                    	<span class="name">2013年</span>
-                        <span class="unit">(9862)</span>
-                    </li>
-                    <li>
-                    	<span class="name">2012年</span>
-                        <span class="unit">(485)</span>
-                    </li>
-                    <li>
-                    	<span class="name">2011年</span>
-                        <span class="unit">(1564)</span>
-                    </li>
-                    <li>
-                    	<input type="text" />
-                        <span class="divsion">-</span>
-                        <input type="text" />
-                    </li>
-                    <li class="more define">
-                    	<a href="javascript:;">
-                        	<span class="text">自定义</span>
-                        </a>
-                    </li>
-                    
-                </ul>
-                <div class="subfield">搜索引擎</div>
-                <ul class="subfieldContext">
-                	<li>
-                    	<span class="name">百度搜索</span>
-                    </li>
-                    <li>
-                    	<span class="name">Google</span>
-                    </li>
-                    <li>
-                    	<span class="name">360搜索</span>
-                    </li>
-                    <li>
-                    	<span class="name">搜搜</span>
-                    </li>
-                    <li class="more">
-                    	<a href="javascript:;">
-                        	<span class="text">更多</span>
-                        	<i class="moreIcon"></i>
-                        </a>
-                    </li>
-                </ul>
-                
-                <div class="subfield">您是不是要找</div>
-                <ul class="subfieldContext">
-                	<li>
-                    	<span class="name">UI设计师</span>
-                    </li>
-                    <li>
-                    	<span class="name">界面作品</span>
-                    </li>
-                </ul>
-                
-                <a href="javascript:;" class="reset">重置搜索选项</a>
-                
-                <div class="sideBarShowHide">
-                	<a href="javascript:;" class="icon"></a>
-                </div>
-            </div>
             <div class="resultArea">
             	<p class="resultTotal">
                 	<span class="info">找到约&nbsp;<span class="totalResult">2,608,495</span>&nbsp;条结果(用时<span class="time">0.36</span>秒)，共约<span class="totalPage">1900</span>页</span>
@@ -268,54 +159,7 @@
                 </div>
                 <!-- 分页 -->
                 <div class="pagination ue-clear"></div>
-                <!-- 相关搜索 -->
-                <div class="dependSearch ue-clear">
-                    <h6>相关搜索</h6>
-                    <div class="searchList">
-                        <p>
-                            <a href="javascript:;">UI设计</a>
-                            <a href="javascript:;">UI设计师</a>
-                            <a href="javascript:;">图标设计</a>
-                            <a href="javascript:;">设计师</a>
-                        </p>
-                        <p>
-                            <a href="javascript:;">后台界面</a>
-                            <a href="javascript:;">管理系统界面</a>
-                            <a href="javascript:;">界面欣赏</a>
-                            <a href="javascript:;">交互设计</a>
-                        </p>
-                    </div>
-                </div>
-                
-                <!--结果中搜索-->
-                <div class="inputArea searchInResult">
-                    <input type="text" class="searchInput" />
-                    <input type="button" class="searchButton" />
-                    <a class="inResult" javascript:;>在结果中搜索</a>
-                </div>
-            </div>
-            <div class="historyArea">
-            	<div class="hotSearch">
-                	<h6>热门搜索</h6>
-                    <ul class="historyList">
-                    	<li><a href="javascript:;">UI设计</a></li>
-                        <li><a href="javascript:;">界面设计</a></li>
-                        <li><a href="javascript:;">手机界面</a></li>
-                        <li><a href="javascript:;">交互</a></li>
-                        <li><a href="javascript:;">图标</a></li>
-                        <li><a href="javascript:;">UI素材</a></li>
-                        <li><a href="javascript:;">教程</a></li>
-                    </ul>
-                </div>
-                <div class="mySearch">
-                	<h6>我的搜索</h6>
-                    <ul class="historyList">
-                    	<li><a href="javascript:;">专注界面设计网站</a></li>
-                        <li><a href="javascript:;">用户体验</a></li>
-                        <li><a href="javascript:;">互联网</a></li>
-                        <li><a href="javascript:;">UI设计师</a></li>
-                    </ul>
-                </div>
+
             </div>
         </div><!-- End of main -->
     </div><!--End of bd-->
@@ -327,44 +171,13 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/global.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/pagination.js"></script>
 <script type="text/javascript">
-	$('.searchList').on('click', '.searchItem', function(){
-		$('.searchList .searchItem').removeClass('current');
-		$(this).addClass('current');	
-	});
+
 	
 	
 	
 	$.each($('.subfieldContext'), function(i, item){
 		$(this).find('li:gt(2)').hide().end().find('li:last').show();		
 	});
-	
-	$('.subfieldContext .more').click(function(e){
-		var $more = $(this).parent('.subfieldContext').find('.more');
-		if($more.hasClass('show')){
-			
-			if($(this).hasClass('define')){
-				$(this).parent('.subfieldContext').find('.more').removeClass('show').find('.text').text('自定义');
-			}else{
-				$(this).parent('.subfieldContext').find('.more').removeClass('show').find('.text').text('更多');	
-			}
-			$(this).parent('.subfieldContext').find('li:gt(2)').hide().end().find('li:last').show();
-	    }else{
-			$(this).parent('.subfieldContext').find('.more').addClass('show').find('.text').text('收起');
-			$(this).parent('.subfieldContext').find('li:gt(2)').show();	
-		}
-		
-	});
-	
-	$('.sideBarShowHide a').click(function(e) {
-		if($('#main').hasClass('sideBarHide')){
-			$('#main').removeClass('sideBarHide');
-			$('#container').removeClass('sideBarHide');
-		}else{
-			$('#main').addClass('sideBarHide');	
-			$('#container').addClass('sideBarHide');
-		}
-        
-    });
 	
 	//分页
 	$(".pagination").pagination(500, {

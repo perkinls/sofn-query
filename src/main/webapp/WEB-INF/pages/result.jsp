@@ -25,10 +25,6 @@
             <div class="resultArea">
             	<p class="resultTotal">
                 	<span class="info">找到约&nbsp;<span class="totalResult">2,608,495</span>&nbsp;条结果(用时<span class="time">0.36</span>秒)，共约<span class="totalPage">1900</span>页</span>
-                    <span class="orderOpt">
-                    	<a href="javascript:;" class="byTime">按时间排序</a>
-                        <a href="javascript:;" class="byDependence">按相关度排序</a>
-                    </span>
                 </p>
                 <div class="resultList">
                 	<div class="resultItem">
@@ -164,8 +160,6 @@
         </div><!-- End of main -->
     </div><!--End of bd-->
 </div>
-
-<div id="foot">Copyright &copy;uimaker.com 版权所有  E-mail:admin@uimaker.com</div>
 </body>
 <script type="text/javascript" src=".${pageContext.request.contextPath}/resource/js/jquery.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/global.js"></script>

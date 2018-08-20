@@ -193,10 +193,7 @@
             </div>
         </div><!-- End of main -->
     </div><!--End of bd-->
-    
-    
 </div>
-<div id="foot">Copyright &copy;xxxxxx.com 版权所有  E-mail:admin@uimaker.com</div>
 </body>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/jquery.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/global.js"></script>

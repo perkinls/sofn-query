@@ -15,9 +15,9 @@
 	<div id="hd" class="ue-clear">
     	<div class="logo"></div>
         <div class="inputArea">
-        	<input type="text" class="searchInput" />
-            <input type="button" class="searchButton" />
-            <a class="back" href="/index">返回主页</a>
+        	<input type="text" class="searchInput" id="keyword"/>
+            <input type="button" class="searchButton" onclick="searchKeyword($('#keyword').val());"/>
+            <a class="back" href="/index.html">返回主页</a>
         </div>
     </div>
     <div class="divsion"></div>
@@ -197,6 +197,7 @@
 </body>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/jquery.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/global.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/search.js"></script>
 <script type="text/javascript">
 	$('.defineRadio input[type=radio]').click(function(e) {
         if($(this).prop('checked')){

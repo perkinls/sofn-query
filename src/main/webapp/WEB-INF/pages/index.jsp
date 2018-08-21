@@ -19,9 +19,10 @@
             </h1>
 
             <div class="inputArea">
-            	<input type="text" class="searchInput" />
-                <input type="button" class="searchButton" onclick="javascript:window.location='/result'" />
-                <a class="advanced" href="/advanced">高级搜索</a>
+            	<input type="text" class="searchInput" id="keyword"/>
+                <%--<input type="button" class="searchButton" onclick="javascript:window.location='/result.html'" />--%>
+                <input type="button" class="searchButton" onclick="searchKeyword($('#keyword').val());" />
+                <a class="advanced" href="/advanced.html">高级搜索</a>
             </div>
         </div><!-- End of main -->
     </div><!--End of bd-->
@@ -30,11 +31,13 @@
 </body>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/jquery.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/global.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/search.js"></script>
 <script type="text/javascript">
 	$('.searchList').on('click', '.searchItem', function(){
 		$('.searchList .searchItem').removeClass('current');
 		$(this).addClass('current');	
 	});
+
 
 </script>
 </html>

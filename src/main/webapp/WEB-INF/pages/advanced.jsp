@@ -33,19 +33,19 @@
                     </dd>
                     <dt class="fillInArea">
                     	<span class="choose">
-                            <input name="scope" type="checkbox" checked="checked">
+                            <input name="es_index" type="checkbox"  value="">
                             <span class="text">监管机构</span>
                         </span>
                         <span class="choose">
-                        <input type="checkbox" name="scope">
+                           <input name="es_index" type="checkbox">
                             <span class="text">检测机构</span>
                         </span>
                         <span class="choose">
-                            <input type="checkbox" name="scope">
+                            <input name="es_index" type="checkbox">
                             <span class="text">执法机构</span>
                         </span>
                         <span class="choose">
-                            <input type="checkbox" name="scope">
+                            <input name="es_index" type="checkbox">
                             <span class="text">生产经营商</span>
                         </span>
                     </dt>
@@ -59,43 +59,43 @@
                     </dd>
                     <dt class="fillInArea">
                     	<span class="choose">
-                            <input name="type" type="checkbox" checked="checked">
+                            <input name="es_index" type="checkbox">
                             <span class="text">农产品追溯</span>
                         </span>
                         <span class="choose">
-                        <input type="checkbox" name="type">
+                            <input name="es_index" type="checkbox">
                             <span class="text">例行监测</span>
                         </span>
                         <span class="choose">
-                            <input type="checkbox" name="type">
+                            <input name="es_index" type="checkbox">
                             <span class="text">专项监测</span>
                         </span>
                         <span class="choose">
-                            <input type="checkbox" name="type">
+                            <input name="es_index" type="checkbox">
                             <span class="text">监督抽查</span>
                         </span>
                         <span class="choose">
-                            <input type="checkbox" name="type">
+                            <input name="es_index" type="checkbox">
                             <span class="text">复检任务</span>
                         </span>
                         <span class="choose">
-                            <input type="checkbox" name="type">
+                            <input name="es_index" type="checkbox">
                             <span class="text">基地巡查</span>
                         </span>
                         <span class="choose">
-                            <input type="checkbox" name="type">
+                            <input name="es_index" type="checkbox">
                             <span class="text">考核任务</span>
                         </span>
                         <span class="choose">
-                            <input type="checkbox" name="type">
+                            <input name="es_index" type="checkbox">
                             <span class="text">执法检查</span>
                         </span>
                         <span class="choose">
-                            <input type="checkbox" name="type">
+                            <input name="es_index" type="checkbox">
                             <span class="text">执法人员</span>
                         </span>
                         <span class="choose">
-                            <input type="checkbox" name="type">
+                            <input name="es_index" type="checkbox">
                             <span class="text">主体交易</span>
                         </span>
                     </dt>
@@ -109,15 +109,15 @@
                     </dd>
                     <dt class="fillInArea">
                     	<span class="choose">
-                            <input name="scope" type="checkbox" checked="checked">
+                            <input name="es_index" type="checkbox">
                             <span class="text">检测任务</span>
                         </span>
                         <span class="choose">
-                        <input type="checkbox" name="scope">
+                            <input name="es_index" type="checkbox">
                             <span class="text">检测项目</span>
                         </span>
                         <span class="choose">
-                            <input type="checkbox" name="scope">
+                            <input name="es_index" type="checkbox">
                             <span class="text">受检单位</span>
                         </span>
                     </dt>
@@ -131,19 +131,19 @@
                     </dd>
                     <dt class="fillInArea">
                     	<span class="choose">
-                            <input type="checkbox" name="time">
+                            <input name="es_index" type="checkbox">
                             <span class="text">监督抽查</span>
                         </span>
                         <span class="choose">
-                            <input type="checkbox" name="time">
+                            <input name="es_index" type="checkbox">
                             <span class="text">委托任务</span>
                         </span>
                         <span class="choose">
-                            <input type="checkbox" name="time">
+                            <input name="es_index" type="checkbox">
                             <span class="text">日常执法</span>
                         </span>
                         <span class="choose">
-                            <input type="checkbox" name="time">
+                            <input name="es_index" type="checkbox">
                             <span class="text">行政处罚</span>
                         </span>
                     </dt>
@@ -160,35 +160,35 @@
                         </div>
                     </dd>
                     <dt class="fillInArea">
-                        <p><input type="text" /></p>
-                        <p><input type="text" /></p>
+                        <p><input type="text" id="all_keywords"/></p>
+                        <p><input type="text" id="any_keywords"/></p>
                     </dt>
                     <dt class="fillInArea">
                     	<span class="choose">
-                            <input type="radio" name="time">
+                            <input type="radio" name="time" value="all" checked="checked">
                             <span class="text">全部</span>
                         </span>
                         <span class="choose">
-                            <input type="radio" name="time">
+                            <input type="radio" name="time" value="day">
                             <span class="text">近一天</span>
                         </span>
                         <span class="choose">
-                            <input type="radio" name="time">
+                            <input type="radio" name="time" value="week">
                             <span class="text">近一周</span>
                         </span>
                         <span class="choose">
-                            <input type="radio" name="time">
+                            <input type="radio" name="time" value="month">
                             <span class="text">近一月</span>
                         </span>
                         <span class="choose">
-                            <input type="radio" name="time">
+                            <input type="radio" name="time" value="year">
                             <span class="text">近一年</span>
                         </span>
                     </dt>
                 </dl>
 
                 <div class="button">
-                	<input type="button" class="search" value="立刻搜索" onclick="javascript:window.location='/result'" />
+                	<input type="button" class="search" value="立刻搜索" onclick="advancedSearch();" />
                 </div>
             </div>
         </div><!-- End of main -->
@@ -222,5 +222,31 @@
 			$('#container').height($(window).height()-33);
 		}	
 	}
+	
+	function advancedSearch() {
+        let all_keywords = $('#all_keywords').val();
+        let any_keywords = $('#any_keywords').val();
+        let timeInfo = $("input[name='time']:checked").val();
+
+        //校验
+        alert(all_keywords);
+        alert(timeInfo);
+
+        $.post(
+            "/result",
+            {"ids":ids.toString()},
+            function(data) {
+                // 提示信息
+                $("#operate_msg").text(data.message);
+                $("#operate_result_info").show();
+                // 等待2S，关闭提示信息
+                setTimeout(function(){
+                    $("#operate_result_info").hide();
+                }, 2000);
+            }
+        );
+       // window.location.href = "/result?keyword="+keyword;
+    }
+	
 </script>
 </html>

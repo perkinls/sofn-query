@@ -33,19 +33,20 @@
                     </dd>
                     <dt class="fillInArea">
                     	<span class="choose">
-                            <input name="es_index" type="checkbox"  value="">
+                            <input name="es_index" type="checkbox"  value="subj_supervise_detail">
                             <span class="text">监管机构</span>
+
                         </span>
                         <span class="choose">
-                           <input name="es_index" type="checkbox">
+                           <input name="es_index" type="checkbox" value="subj_detection_detail">
                             <span class="text">检测机构</span>
                         </span>
                         <span class="choose">
-                            <input name="es_index" type="checkbox">
+                            <input name="es_index" type="checkbox" value="subj_enforce_law_detail">
                             <span class="text">执法机构</span>
                         </span>
                         <span class="choose">
-                            <input name="es_index" type="checkbox">
+                            <input name="es_index" type="checkbox" value="subj_enterprise_detail">
                             <span class="text">生产经营商</span>
                         </span>
                     </dt>
@@ -59,45 +60,43 @@
                     </dd>
                     <dt class="fillInArea">
                     	<span class="choose">
-                            <input name="es_index" type="checkbox">
-                            <span class="text">农产品追溯</span>
+                            <input name="es_index" type="checkbox"
+                                   value="tts_scltxxcj_product_v2,tts_scltxxcj_xsdj_v2,tts_scltxxcj_scgl_v2,tts_scltxxcj_xsdjjl_v2,tts_scltxxcj_cppchc_v2,tts_scltxxcj_cggl_v2,tts_scltxxcj_xsth_v2,tts_scltxxcj_sla_record_v2">
+                            <span class="text">产品追溯</span>
                         </span>
                         <span class="choose">
-                            <input name="es_index" type="checkbox">
+                            <input name="es_index" type="checkbox" value="business_asms_routine_monitor">
                             <span class="text">例行监测</span>
                         </span>
                         <span class="choose">
-                            <input name="es_index" type="checkbox">
+                            <input name="es_index" type="checkbox" value="business_asms_special_monitor">
                             <span class="text">专项监测</span>
                         </span>
                         <span class="choose">
-                            <input name="es_index" type="checkbox">
+                            <input name="es_index" type="checkbox" value="business_asms_check_task">
                             <span class="text">监督抽查</span>
                         </span>
                         <span class="choose">
-                            <input name="es_index" type="checkbox">
+                            <input name="es_index" type="checkbox" value="business_asms_recheck_task">
                             <span class="text">复检任务</span>
                         </span>
                         <span class="choose">
-                            <input name="es_index" type="checkbox">
+                            <input name="es_index" type="checkbox" value="business_asms_base_inspection">
                             <span class="text">基地巡查</span>
                         </span>
                         <span class="choose">
-                            <input name="es_index" type="checkbox">
+                            <input name="es_index" type="checkbox" value="business_asms_inspection_assess">
                             <span class="text">考核任务</span>
                         </span>
-                        <span class="choose">
-                            <input name="es_index" type="checkbox">
-                            <span class="text">执法检查</span>
-                        </span>
-                        <span class="choose">
-                            <input name="es_index" type="checkbox">
-                            <span class="text">执法人员</span>
-                        </span>
-                        <span class="choose">
-                            <input name="es_index" type="checkbox">
-                            <span class="text">主体交易</span>
-                        </span>
+                        <%--<span class="choose">--%>
+                            <%--<input name="es_index" type="checkbox"--%>
+                                   <%--value="ales_task_sample,ales_wt_object_criterion,ales_entrust_detection,ales_wt_task_enterprise">--%>
+                            <%--<span class="text">执法检查</span>--%>
+                        <%--</span>--%>
+                        <%--<span class="choose">--%>
+                            <%--<input name="es_index" type="checkbox" value="">--%>
+                            <%--<span class="text">主体交易</span>--%>
+                        <%--</span>--%>
                     </dt>
                 </dl>
                 
@@ -105,21 +104,21 @@
                 <dl class="ue-clear advanceItem part">
                 	<dd>
                     	<label>检测信息</label>
-                        <span>指定检测信息条韩</span>
+                        <span>指定检测信息条件</span>
                     </dd>
                     <dt class="fillInArea">
                     	<span class="choose">
-                            <input name="es_index" type="checkbox">
+                            <input name="es_index" type="checkbox" value="ads_monitor_task">
                             <span class="text">检测任务</span>
                         </span>
                         <span class="choose">
-                            <input name="es_index" type="checkbox">
+                            <input name="es_index" type="checkbox" value="ads_info_project">
                             <span class="text">检测项目</span>
                         </span>
-                        <span class="choose">
-                            <input name="es_index" type="checkbox">
-                            <span class="text">受检单位</span>
-                        </span>
+                        <%--<span class="choose">--%>
+                            <%--<input name="es_index" type="checkbox" value="">--%>
+                            <%--<span class="text">受检单位</span>--%>
+                        <%--</span>--%>
                     </dt>
                 </dl>
                 
@@ -130,39 +129,31 @@
                         <span>指定执法信息条件</span>
                     </dd>
                     <dt class="fillInArea">
-                    	<span class="choose">
-                            <input name="es_index" type="checkbox">
-                            <span class="text">监督抽查</span>
-                        </span>
+                    	<%--<span class="choose">--%>
+                            <%--<input name="es_index" type="checkbox" value="">--%>
+                            <%--<span class="text">监督抽查</span>--%>
+                        <%--</span>--%>
                         <span class="choose">
-                            <input name="es_index" type="checkbox">
+                            <input name="es_index" type="checkbox" value="ales_wt_task_monitor">
                             <span class="text">委托任务</span>
                         </span>
                         <span class="choose">
-                            <input name="es_index" type="checkbox">
+                            <input name="es_index" type="checkbox" value="ales_daily_enforce_law">
                             <span class="text">日常执法</span>
                         </span>
                         <span class="choose">
-                            <input name="es_index" type="checkbox">
+                            <input name="es_index" type="checkbox" value="ales_produce_admin_punish">
                             <span class="text">行政处罚</span>
                         </span>
                     </dt>
                 </dl>
 
-                <!--搜索关键字-->
-                <dl class="ue-clear advanceItem keyWords">
+                <!--时间信息-->
+                <dl class="ue-clear advanceItem time">
                     <dd>
-                        <label>关键字及时间</label>
-                        <div class="tips">
-                            <p class="tip">包含以下<span class="impInfo">全部</span>的关键</p>
-                            <p class="tip">包含以下<span class="impInfo">任意一个</span>关键词</p>
-                            <p class="tip"><span class="impInfo">指定</span>时间范围</p>
-                        </div>
+                        <label>时间</label>
+                        <span>指定时间范围</span>
                     </dd>
-                    <dt class="fillInArea">
-                        <p><input type="text" id="all_keywords"/></p>
-                        <p><input type="text" id="any_keywords"/></p>
-                    </dt>
                     <dt class="fillInArea">
                     	<span class="choose">
                             <input type="radio" name="time" value="all" checked="checked">
@@ -187,9 +178,25 @@
                     </dt>
                 </dl>
 
-                <div class="button">
-                	<input type="button" class="search" value="立刻搜索" onclick="advancedSearch();" />
-                </div>
+                <!--搜索关键字-->
+                <dl class="ue-clear advanceItem keyWords">
+                    <dd>
+                        <label>关键字</label>
+                        <div class="tips">
+                            <p class="tip">包含以下<span class="impInfo">全部</span>的关键</p>
+                            <p class="tip">包含以下<span class="impInfo">任意一个</span>关键词</p>
+                        </div>
+                    </dd>
+                    <dt class="fillInArea">
+                        <p><input type="text" id="all_keywords"/> <input type="button"  value="立刻搜索" onclick="advancedSearchAll();" /></p>
+                        <p><input type="text" id="any_keywords"/> <input type="button"  value="立刻搜索" onclick="advancedSearchAny();" /></p>
+                    </dt>
+
+                </dl>
+
+                <%--<div class="button">--%>
+                	<%--<input type="button" class="search" value="立刻搜索" onclick="advancedSearch();" />--%>
+                <%--</div>--%>
             </div>
         </div><!-- End of main -->
     </div><!--End of bd-->
@@ -222,30 +229,52 @@
 			$('#container').height($(window).height()-33);
 		}	
 	}
-	
-	function advancedSearch() {
+    function advancedSearchAll() {
         let all_keywords = $('#all_keywords').val();
-        let any_keywords = $('#any_keywords').val();
         let timeInfo = $("input[name='time']:checked").val();
-
-        //校验
-        alert(all_keywords);
-        alert(timeInfo);
+        let indices = "";
+        $.each($("input[name='es_index']:checked"),function(){
+            indices = indices + $(this).val() + ",";
+        });
 
         $.post(
             "/result",
-            {"ids":ids.toString()},
+            {
+                "all_keywords":all_keywords,
+                "timeInfo":timeInfo,
+                "indices":indices
+            },
             function(data) {
-                // 提示信息
-                $("#operate_msg").text(data.message);
-                $("#operate_result_info").show();
                 // 等待2S，关闭提示信息
                 setTimeout(function(){
-                    $("#operate_result_info").hide();
+                    alert("请求超时！");
                 }, 2000);
             }
         );
-       // window.location.href = "/result?keyword="+keyword;
+        // window.location.href = "/result?keyword="+keyword;
+    }
+	function advancedSearchAny() {
+        let any_keywords = $('#any_keywords').val();
+        let timeInfo = $("input[name='time']:checked").val();
+        var indices = "";
+        $.each($("input[name='es_index']:checked"),function(){
+            indices = indices + $(this).val() + ",";
+        });
+
+        $.post(
+            "/adv",
+            {
+                "any_keywords":any_keywords,
+                "timeInfo":timeInfo,
+                "indices":indices
+            },
+            function(data) {
+                // 等待2S，关闭提示信息
+                setTimeout(function(){
+                    alert("请求超时！");
+                }, 2000);
+            }
+        );
     }
 	
 </script>

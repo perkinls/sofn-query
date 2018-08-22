@@ -17,28 +17,28 @@
         <div class="inputArea">
         	<input type="text" class="searchInput" id="keyword"/>
             <input type="button" class="searchButton" onclick="searchKeyword($('#keyword').val());"/>
-            <a class="advanced" href="/advanced.html">高级搜索</a>
+            <%--<a class="advanced" href="/advanced.html">高级搜索</a>--%>
         </div>
     </div>
 	<div id="bd" class="ue-clear">
         <div id="main">
             <div class="resultArea">
                 <p class="resultTotal">
-                    <span class="info">找到&nbsp;<span class="totalResult">${result.size}</span>&nbsp;条结果(用时<span class="time">${result.took}</span>)</span>
+                    <span class="info">共找到&nbsp;<span class="totalResult">${result.size}</span>&nbsp;条记录</span>
                 </p>
                 <div class="resultList">
                     <c:forEach items="${result.list }" var="hit">
                         <div class="resultItem">
                             <div class="itemHead">
-                                <a href="/detail.html"  target="_blank" class="title"><span>${hit.keywordFiled}</span></a>
+                                <a href="/detail.html?param=${hit}"  target="_blank" class="title"><span>表名：${hit.tableName}</span></a>
                                 <span class="divsion">-</span>
                                 <span class="fileType">
                             	    <span class="label">索引库：</span>
-                                    <span class="value">${hit.index}</span>
+                                    <span class="value"> ${hit.indexName}</span>
                                 </span>
                             </div>
                             <div class="itemBody">
-                                    ${hit.source}
+                                    ${hit}
                             </div>
                         </div>
                     </c:forEach>

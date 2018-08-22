@@ -1,15 +1,8 @@
 package com.sofn.controller;
 
-
-
-import com.alibaba.fastjson.JSONObject;
 import com.sofn.service.HelloWebService;
-import com.sofn.utils.ESUtil;
+import com.sofn.utils.RedisUtil;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.index.query.Operator;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,38 +39,13 @@ public class HelloWeb {
         String pageIndex_info = request.getParameter("pageIndex");
         int pageIndex = null==pageIndex_info?0:Integer.parseInt(pageIndex_info);
 
-        //查询ES索引库
-        SearchResponse response = helloWebService.searchResponse(keyword, pageIndex);
-
         //封装返回结果
         Map result = new HashMap();
-        List list = new ArrayList();
-        for(SearchHit hit:response.getHits()){
-            Map<String,Object> map=new HashMap<>();
-            String resource = hit.getSourceAsString();
-            JSONObject jsonObject = JSONObject.parseObject(resource);
 
-            //关键字高亮处理
-            String keywordFiled = null;
-            for(String key:jsonObject.keySet()){
-                if(null == jsonObject.get(key)) continue;
-
-                String value = jsonObject.get(key).toString();
-                if(value.contains(keyword)){
-                    value = value.replace(keyword, "<span style='color:red;'>" + keyword + "</span>");
-                    resource = resource.replace(keyword,"<span style='color:red;'>" + keyword + "</span>");
-                    keywordFiled = key + ": " + value;
-                    break;
-                }
-            }
-            map.put("keywordFiled",keywordFiled);
-            map.put("source",resource);
-            map.put("index",hit.getIndex());
-            list.add(map);
-        }
+        //查询ES索引库
+        List list = helloWebService.searchES(keyword);
         result.put("list",list);
-        result.put("took",response.getTook());
-        result.put("size",response.getHits().totalHits);
+        result.put("size",list.size());
         result.put("keyword",keyword);
         result.put("pageIndex",pageIndex);
         model.addAttribute("result",result);

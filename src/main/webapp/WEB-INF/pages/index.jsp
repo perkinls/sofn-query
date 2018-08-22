@@ -22,7 +22,7 @@
             	<input type="text" class="searchInput" id="keyword"/>
                 <%--<input type="button" class="searchButton" onclick="javascript:window.location='/result.html'" />--%>
                 <input type="button" class="searchButton" onclick="searchKeyword($('#keyword').val());" />
-                <a class="advanced" href="/advanced.html">高级搜索</a>
+                <%--<a class="advanced" href="/advanced.html">高级搜索</a>--%>
             </div>
         </div><!-- End of main -->
     </div><!--End of bd-->

@@ -28,6 +28,7 @@ public class RedisUtil {
     }
 
     public static void main(String[] args){
-        System.out.println(getJedis());
+        Jedis jedis = getJedis();
+        System.out.println(jedis.get("TABLE_INFO: "+"ales_task_sample"));
     }
 }

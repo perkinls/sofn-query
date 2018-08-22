@@ -1,16 +1,12 @@
 package com.sofn.controller;
 
 import com.sofn.service.HelloWebService;
-import com.sofn.utils.RedisUtil;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,9 +39,10 @@ public class HelloWeb {
         Map result = new HashMap();
 
         //查询ES索引库
-        List list = helloWebService.searchES(keyword);
+        List list = helloWebService.searchES(keyword, pageIndex);
+        long totalSize = helloWebService.keywordRecordCount(keyword);
         result.put("list",list);
-        result.put("size",list.size());
+        result.put("totalSize",totalSize);
         result.put("keyword",keyword);
         result.put("pageIndex",pageIndex);
         model.addAttribute("result",result);
@@ -55,7 +52,15 @@ public class HelloWeb {
 
 
     @RequestMapping("detail")
-    public String detail(){
+    public String detail(HttpServletRequest request, Model model){
+        //读取请求参数
+        int index = Integer.parseInt(request.getParameter("indexName"));
+        String keyword = request.getParameter("keyword");
+
+        List<String> currHeads = helloWebService.getHeadsByIndex(keyword, index);
+        List currRecords = helloWebService.getRecordsByIndex(keyword,index, currHeads);
+        model.addAttribute("currHeads", currHeads);
+        model.addAttribute("currRecords",currRecords);
         return "detail";
     }
 

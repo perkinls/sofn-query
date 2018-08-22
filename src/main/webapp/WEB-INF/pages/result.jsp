@@ -24,13 +24,13 @@
         <div id="main">
             <div class="resultArea">
                 <p class="resultTotal">
-                    <span class="info">共找到&nbsp;<span class="totalResult">${result.size}</span>&nbsp;条记录</span>
+                    <span class="info">共找到&nbsp;<span class="totalResult">${result.totalSize}</span>&nbsp;条记录</span>
                 </p>
                 <div class="resultList">
-                    <c:forEach items="${result.list }" var="hit">
+                    <c:forEach items="${result.list }" varStatus="status" var="hit">
                         <div class="resultItem">
                             <div class="itemHead">
-                                <a href="/detail.html?param=${hit}"  target="_blank" class="title"><span>表名：${hit.tableName}</span></a>
+                                <a href="/detail?keyword=${result.keyword}&indexName=${status.index}"  target="_blank" class="title"><span>表名：${hit.tableName}</span></a>
                                 <span class="divsion">-</span>
                                 <span class="fileType">
                             	    <span class="label">索引库：</span>
@@ -38,7 +38,7 @@
                                 </span>
                             </div>
                             <div class="itemBody">
-                                    ${hit}
+                                    <%--${hit}--%>
                             </div>
                         </div>
                     </c:forEach>
@@ -64,7 +64,7 @@
 	});
 	
 	//分页
-	$(".pagination").pagination(${result.size}, {
+	$(".pagination").pagination(${result.totalSize}, {
 		current_page :${result.pageIndex}?${result.pageIndex}:0, //当前页码
 		items_per_page :10,
 		display_msg :true,

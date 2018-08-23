@@ -4,3 +4,4 @@ function searchKeyword(keyword) {
     }
     window.location.href = "/result?keyword="+keyword;
 }
+

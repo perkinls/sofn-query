@@ -38,7 +38,9 @@
                                 </span>
                             </div>
                             <div class="itemBody">
-                                    <%--${hit}--%>
+                                <c:forEach items="${hit.showRecords }" var="record">
+                                    <p>${record}</p>
+                                </c:forEach>
                             </div>
                         </div>
                     </c:forEach>

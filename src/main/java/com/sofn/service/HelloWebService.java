@@ -64,8 +64,8 @@ public class HelloWebService {
         for(Object obj:oriRecords){
             JSONObject jsonObject = JSONObject.parseObject(obj.toString());
             for(Map.Entry<String,Object> entry:jsonObject.entrySet()){
-                String value = entry.getValue().toString();
-                if(StringUtils.isEmpty(value)){
+                Object value = entry.getValue();
+                if(null == value || StringUtils.isEmpty(value.toString())){
                     invalidFields.add(entry.getKey());
                 }
             }
@@ -75,17 +75,23 @@ public class HelloWebService {
             for(String key:invalidFields){
                 jsonObject.remove(key);
             }
-
-            //key即fieldName替换成中文
-            JSONObject replaceObj = new JSONObject();
-            for(Map.Entry<String,Object> entry:jsonObject.entrySet()){
-                String CHN_Name = jedis.get(REDIS_KEY_FIELD_PREFIX + indexName + "_" + entry.getKey());
-                replaceObj.put(CHN_Name,entry.getValue());
-            }
+            JSONObject replaceObj = replaceKeyUseCHN(indexName, jsonObject);
             finalRecords.add(replaceObj);
         }
         result.put("records",finalRecords);
         return result;
+    }
+
+    /**
+     * key即fieldName替换成中文
+     */
+    private JSONObject replaceKeyUseCHN(String indexName, JSONObject jsonObject) {
+        JSONObject replaceObj = new JSONObject();
+        for (Map.Entry<String, Object> entry : jsonObject.entrySet()) {
+            String CHN_Name = jedis.get(REDIS_KEY_FIELD_PREFIX + indexName + "_" + entry.getKey());
+            replaceObj.put(CHN_Name, entry.getValue());
+        }
+        return replaceObj;
     }
 
     public List<Object> searchES(String keyword, int pageIndex) {
@@ -93,7 +99,7 @@ public class HelloWebService {
         if (jedis.exists(REDIS_KEY_KEYWORD_PREFIX + keyword)) {
             jedis.expire(REDIS_KEY_KEYWORD_PREFIX + keyword, REDIS_KEYWORD_EXPIRE_SECONDS);
             List<String> redisRes = jedis.lrange(REDIS_KEY_KEYWORD_PREFIX + keyword, pageIndex * pageSize, pageIndex * pageSize + pageSize - 1);
-            return parseObj(redisRes);
+            return parseObj(redisRes, keyword);
         }
 
         //构建关键字查询的条件
@@ -125,7 +131,7 @@ public class HelloWebService {
         jedis.expire(REDIS_KEY_KEYWORD_PREFIX + keyword, REDIS_KEYWORD_EXPIRE_SECONDS);
         //redis中分页查询
         List<String> redisRes = jedis.lrange(REDIS_KEY_KEYWORD_PREFIX + keyword, pageIndex * pageSize, pageIndex * pageSize + pageSize - 1);
-        return parseObj(redisRes);
+        return parseObj(redisRes, keyword);
     }
 
     public long keywordRecordCount(String keyword) {
@@ -133,13 +139,61 @@ public class HelloWebService {
     }
 
 
-    private List<Object> parseObj(List<String> jsonInfo) {
+    /**
+     * 解析
+     * @param jsonInfo
+     * @return
+     */
+    private List<Object> parseObj(List<String> jsonInfo, String keyword) {
         List<Object> list = new ArrayList<>();
         for (String str : jsonInfo) {
-            JSONObject jsonObject = JSONObject.parseObject(str);
-            list.add(jsonObject);
+            JSONObject eachObject = JSONObject.parseObject(str);
+            String indexName = eachObject.getString("indexName");
+            JSONArray oriRecords = eachObject.getJSONArray("records");
+
+            //采集部分数据，用于前端结果页面效果展示. 每个索引库至多显示10条
+            JSONArray exampleShowRecords = new JSONArray();
+            eachObject.put("showRecords",exampleShowRecords);
+            for(Object obj:oriRecords){
+                JSONObject record = JSONObject.parseObject(obj.toString());
+                Set<String> keys = record.keySet();
+                String keyword2key = keywordHighLight(keyword, record);
+                //除包含关键字段信息外，额外展示两个字段的内容
+                JSONObject showObj = new JSONObject();
+                showObj.put(keyword2key,record.get(keyword2key));
+                for(String key:keys){
+                    Object value = record.get(key);
+                    if(value!=null && !StringUtils.isEmpty(value.toString()) && keyword2key.equals(key)){
+                        showObj.put(key,value);
+                        if(showObj.size()>3)    break;
+                    }
+                }
+                JSONObject replaceObj = replaceKeyUseCHN(indexName, showObj);
+                exampleShowRecords.add(replaceObj);
+                if(exampleShowRecords.size()==10) break;
+            }
+            list.add(eachObject);
         }
         return list;
+    }
+
+    /**
+     * 关键字高亮
+     * @param keyword
+     * @param jsonObject
+     */
+    private String keywordHighLight(String keyword, JSONObject jsonObject) {
+        Set<String> keys = jsonObject.keySet();
+        for(String key:keys){
+            if(null == jsonObject.get(key)) continue;
+            String value = jsonObject.get(key).toString();
+            if(value.contains(keyword)){
+                value = value.replace(keyword, "<span style='color:red;'>" + keyword + "</span>");
+                jsonObject.put(key,value);
+                return key;
+            }
+        }
+        return null;
     }
 
     //静态加载，暂时这样处理

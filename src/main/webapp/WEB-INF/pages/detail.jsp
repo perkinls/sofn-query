@@ -5,7 +5,7 @@
 <head>
     <title></title>
     <script type="text/javascript">
-        var jsonArray = [{"编号":"001","名称":"小苹果","描述":"现代神曲，大妈的最爱"},{"编号":"002","名称":"mou宝","描述":"想怎么玩就怎么完"}];
+        var jsonArray = ${currMap.records};
         var headArray = [];
         function parseHead(oneRow) {
             for ( var i in oneRow) {

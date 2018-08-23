@@ -30,7 +30,7 @@
                     <c:forEach items="${result.list }" varStatus="status" var="hit">
                         <div class="resultItem">
                             <div class="itemHead">
-                                <a href="/detail?keyword=${result.keyword}&indexName=${status.index}"  target="_blank" class="title"><span>表名：${hit.tableName}</span></a>
+                                <a href="/detail?keyword=${result.keyword}&index=${status.index}&pageIndex=${result.pageIndex}"  target="_blank" class="title"><span>表名：${hit.tableName}</span></a>
                                 <span class="divsion">-</span>
                                 <span class="fileType">
                             	    <span class="label">索引库：</span>

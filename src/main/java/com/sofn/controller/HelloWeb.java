@@ -1,5 +1,6 @@
 package com.sofn.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.sofn.service.HelloWebService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -54,13 +55,12 @@ public class HelloWeb {
     @RequestMapping("detail")
     public String detail(HttpServletRequest request, Model model){
         //读取请求参数
-        int index = Integer.parseInt(request.getParameter("indexName"));
+        int index = Integer.parseInt(request.getParameter("index"));
         String keyword = request.getParameter("keyword");
+        int pageIndex = Integer.parseInt(request.getParameter("pageIndex"));
 
-        List<String> currHeads = helloWebService.getHeadsByIndex(keyword, index);
-        List currRecords = helloWebService.getRecordsByIndex(keyword,index, currHeads);
-        model.addAttribute("currHeads", currHeads);
-        model.addAttribute("currRecords",currRecords);
+        Map currMap = helloWebService.getRecordsByIndex(keyword, index, pageIndex);
+        model.addAttribute("currMap",currMap);
         return "detail";
     }
 

@@ -1,10 +1,12 @@
 package com.sofn.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.sofn.utils.ESUtil;
 import com.sofn.utils.MysqlUtil;
 import com.sofn.utils.RedisUtil;
+import com.sofn.utils.StringUtils;
 import org.elasticsearch.action.ActionFuture;
 import org.elasticsearch.action.admin.indices.stats.IndicesStatsRequest;
 import org.elasticsearch.action.admin.indices.stats.IndicesStatsResponse;
@@ -35,14 +37,54 @@ public class HelloWebService {
     private static Jedis jedis;
 
 
-    public List<String> getHeadsByIndex(String keyword, int pageIndex) {
-        // TODO
-        return null;
-    }
+    public Map getRecordsByIndex(String keyword, int index, int pageIndex) {
+        index = pageIndex*pageSize+index;
+        String currMapInfo = null;
+        try{
+            currMapInfo = jedis.lrange(REDIS_KEY_KEYWORD_PREFIX+keyword,index,index).get(0);
+        }catch (Exception e){
+            //异常原因可能是key已经过期，需要重新查询
+            searchES(keyword, pageIndex);
+            currMapInfo = jedis.lrange(REDIS_KEY_KEYWORD_PREFIX+keyword,index,index).get(0);
+        }
 
-    public List<Object> getRecordsByIndex(String keyword, int pageIndex, List<String> heads) {
-        //TODO
-        return null;
+        Map result = new HashMap();
+        JSONObject currTable = JSONObject.parseObject(currMapInfo);
+        String tableName = currTable.getString("tableName");
+        String indexName = currTable.getString("indexName");
+        JSONArray oriRecords = currTable.getJSONArray("records");
+        JSONArray finalRecords = new JSONArray();
+
+        result.put("tableName",tableName);
+        result.put("indexName",indexName);
+
+        //过滤出有用的字段，用于前端显示
+        Set<String> invalidFields = new HashSet<>();
+        for(Object obj:oriRecords){
+            JSONObject jsonObject = JSONObject.parseObject(obj.toString());
+            for(Map.Entry<String,Object> entry:jsonObject.entrySet()){
+                String value = entry.getValue().toString();
+                if(StringUtils.isEmpty(value)){
+                    invalidFields.add(entry.getKey());
+                }
+            }
+        }
+        for(Object obj:oriRecords){
+            JSONObject jsonObject = JSONObject.parseObject(obj.toString());
+            for(String key:invalidFields){
+                jsonObject.remove(key);
+            }
+
+            //key即fieldName替换成中文
+            JSONObject replaceObj = new JSONObject();
+            for(Map.Entry<String,Object> entry:jsonObject.entrySet()){
+                String CHN_Name = jedis.get(REDIS_KEY_FIELD_PREFIX + indexName + "_" + entry.getKey());
+                replaceObj.put(CHN_Name,entry.getValue());
+            }
+            finalRecords.add(replaceObj);
+        }
+        result.put("records",finalRecords);
+        return result;
     }
 
     public List<Object> searchES(String keyword, int pageIndex) {
@@ -68,7 +110,7 @@ public class HelloWebService {
                 records.add(hit.getSourceAsString());
             }
             curr.put("indexName", indexName);
-            curr.put("records", JSON.toJSONString(records));
+            curr.put("records", records);
             curr.put("tableName", jedis.get(REDIS_KEY_TABLE_PREFIX + indexName));
 
             list.add(curr);

@@ -124,6 +124,10 @@
 
 	function reset() {
         //TODO
+        $("#txtBeginDate").val("");
+        $("#txtEndDate").val("")
+        $("#keyword").val("");
+
     }
 
     $("body").keydown(function() {

@@ -42,14 +42,15 @@ public class HelloWebService {
 
     public Map getRecordsByIndex(String keyword, int index, int pageIndex, String startDate, String endDate) {
         index = pageIndex*pageSize+index;
+        String redisKey = REDIS_KEY_KEYWORD_PREFIX+keyword+startDate+endDate;
         //拿去指定索引里对应的信息
         String currMapInfo = null;
         try{
-            currMapInfo = jedis.lrange(REDIS_KEY_KEYWORD_PREFIX+keyword,index,index).get(0);
+            currMapInfo = jedis.lrange(redisKey,index,index).get(0);
         }catch (Exception e){
             //异常原因可能是key已经过期，需要重新查询
             searchES(keyword, pageIndex, startDate, endDate);
-            currMapInfo = jedis.lrange(REDIS_KEY_KEYWORD_PREFIX+keyword,index,index).get(0);
+            currMapInfo = jedis.lrange(redisKey,index,index).get(0);
         }
 
         Map result = new HashMap();
@@ -101,14 +102,14 @@ public class HelloWebService {
         Map result = new HashMap();
         long indexCount = 0;
         long recordCount = 0;
-
+        String redisKey = REDIS_KEY_KEYWORD_PREFIX+keyword+startDate+endDate;
         //先去redis缓存查找
-        if (jedis.exists(REDIS_KEY_KEYWORD_PREFIX + keyword)) {
-            jedis.expire(REDIS_KEY_KEYWORD_PREFIX + keyword, REDIS_KEYWORD_EXPIRE_SECONDS);
-            List<String> redisRes = jedis.lrange(REDIS_KEY_KEYWORD_PREFIX + keyword, pageIndex * pageSize, pageIndex * pageSize + pageSize - 1);
+        if (jedis.exists(redisKey)) {
+            jedis.expire(redisKey, REDIS_KEYWORD_EXPIRE_SECONDS);
+            List<String> redisRes = jedis.lrange(redisKey, pageIndex * pageSize, pageIndex * pageSize + pageSize - 1);
             result.put("list", parseObj(redisRes, keyword));
-            result.put("indexCount",jedis.llen(REDIS_KEY_KEYWORD_PREFIX + keyword));
-            for(String info:jedis.lrange(REDIS_KEY_KEYWORD_PREFIX + keyword,0,-1)){
+            result.put("indexCount",jedis.llen(redisKey));
+            for(String info:jedis.lrange(redisKey,0,-1)){
                 recordCount += JSONObject.parseObject(info).getJSONArray("records").size();
             }
             result.put("recordCount",recordCount);
@@ -147,25 +148,16 @@ public class HelloWebService {
             //对于关键字搜索到的结果使用追加的方式保存起来
             curr.put("oneIndexCount",records.size());
             curr.put("tableName", jedis.get(REDIS_KEY_TABLE_PREFIX + indexName));
-            jedis.rpush(REDIS_KEY_KEYWORD_PREFIX + keyword, curr.toJSONString());
+            jedis.rpush(redisKey, curr.toJSONString());
         }
         //进行持久化操作 expire
-        jedis.expire(REDIS_KEY_KEYWORD_PREFIX + keyword, REDIS_KEYWORD_EXPIRE_SECONDS);
+        jedis.expire(redisKey, REDIS_KEYWORD_EXPIRE_SECONDS);
         //redis中分页查询
-        List<String> redisRes = jedis.lrange(REDIS_KEY_KEYWORD_PREFIX + keyword, pageIndex * pageSize, pageIndex * pageSize + pageSize - 1);
+        List<String> redisRes = jedis.lrange(redisKey, pageIndex * pageSize, pageIndex * pageSize + pageSize - 1);
         result.put("list", parseObj(redisRes, keyword));
         result.put("recordCount",recordCount);
         result.put("indexCount",indexCount);
         return result;
-    }
-
-    /**
-     * 能够找到关键字的索引库个数
-     * @param keyword
-     * @return
-     */
-    public long keywordIndexCount(String keyword) {
-        return jedis.llen(REDIS_KEY_KEYWORD_PREFIX + keyword);
     }
 
     /**
@@ -188,14 +180,14 @@ public class HelloWebService {
      */
     public boolean isValidDateRange(String startDateInfo,String endDateInfo, Map<String,Object> resourceMap){
         //不考虑时间范围
-        if(startDateInfo == null && endDateInfo == null){
+        if(StringUtils.isEmpty(startDateInfo) && StringUtils.isEmpty(endDateInfo)){
             return true;
         }
 
         boolean result = true;
         try {
-            Date startDate = startDateInfo == null ? null: sdf.parse(startDateInfo);
-            Date endDate = endDateInfo == null? null : sdf.parse(endDateInfo);
+            Date startDate = StringUtils.isEmpty(startDateInfo) ? null: sdf.parse(startDateInfo);
+            Date endDate = StringUtils.isEmpty(endDateInfo)? null : sdf.parse(endDateInfo);
             if(null != endDate) endDate.setDate(endDate.getDate()+1);
 
             for(Map.Entry<String,Object> entry:resourceMap.entrySet()){

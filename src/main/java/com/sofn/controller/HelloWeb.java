@@ -51,6 +51,8 @@ public class HelloWeb {
         result.put("indexCount",searchResult.get("indexCount"));
         result.put("recordCount",searchResult.get("recordCount"));
         result.put("keyword",keyword);
+        result.put("startDate",startDate);
+        result.put("endDate",endDate);
         result.put("pageIndex",pageIndex);
         model.addAttribute("result",result);
         return "result";

@@ -1,7 +1,13 @@
-function searchKeyword(keyword) {
+function searchKeyword(keyword,startDate,endDate) {
     if(""==keyword||""==keyword.trim()){
         return;
     }
-    window.location.href = "/result?keyword="+keyword;
+    if(!startDate || startDate==""){
+        startDate=null;
+    }
+    if(!endDate || endDate==""){
+        endDate=null;
+    }
+    window.location.href = "/result?keyword="+keyword+"&startDate="+startDate+"&endDate="+endDate;
 }
 

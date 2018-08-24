@@ -16,19 +16,19 @@
 	<div id="hd" class="ue-clear" st>
     	<div class="logo"></div>
         <div class="inputArea">
-        	<input type="text" class="searchInput" id="keyword"/>
-            <input type="button" class="searchButton" onclick="searchKeyword($('#keyword').val());"/>
-            <input type="button" id="searchES" class="searchButton" onclick="searchKeyword($('#keyword').val());"/>
+        	<input type="text" class="searchInput" id="keyword" value="${result.keyword}"/>
+            <div class="datesearch">
+                日期范围：<input id="txtBeginDate" style="width:120px;border:1px solid #ccc;" value="${result.startDate}"/>
+                -至- <input id="txtEndDate" style="width:120px;border:1px solid #ccc;" value="${result.endDate}"/>
+                <button id="reset" type="reset" onclick="reset()" >重置</button>
+            </div>
+            <input type="button" id="searchES" class="searchButton"
+                   onclick="searchKeyword($('#keyword').val(),$('#txtBeginDate').val(),$('#txtEndDate').val());"/>
             <%--<a class="advanced" href="/advanced.html">高级搜索</a>--%>
         </div>
     </div>
 	<div id="bd" class="ue-clear">
         <div id="main">
-            <div class="datesearch">
-                日期选择：<input id="txtBeginDate" style="width:120px;border:1px solid #ccc;"/>
-                -- <input id="txtEndDate" style="width:120px;border:1px solid #ccc;" />
-                <button id="reset" type="reset" onclick="reset()" >重置</button>
-            </div>
             <div class="resultArea">
                 <p class="resultTotal">
                     <span class="info">共匹配到&nbsp;<span class="totalResult">${result.indexCount}</span>&nbsp;张表&nbsp;</span>
@@ -38,7 +38,7 @@
                     <c:forEach items="${result.list }" varStatus="status" var="hit">
                         <div class="resultItem">
                             <div class="itemHead">
-                                <a href="/detail?keyword=${result.keyword}&index=${status.index}&pageIndex=${result.pageIndex}"  target="_blank" class="title"><span>${hit.tableName}</span></a>
+                                <a href="/detail?startDate=${result.startDate}&endDate=${result.endDate}&keyword=${result.keyword}&index=${status.index}&pageIndex=${result.pageIndex}"  target="_blank" class="title"><span>${hit.tableName}</span></a>
                                 <span class="divsion">-</span>
                                 <span class="fileType">
                             	    <span class="label">索引库：</span>
@@ -67,10 +67,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/search.js"></script>
 <script src="${pageContext.request.contextPath}/resource/js/lyz.calendar.min.js" type="text/javascript"></script>
 <script type="text/javascript">
-
-	
-	
-	
 	$.each($('.subfieldContext'), function(i, item){
 		$(this).find('li:gt(2)').hide().end().find('li:last').show();		
 	});
@@ -83,7 +79,7 @@
 		callback :pageselectCallback
 	});
 	function pageselectCallback(page_id, jq) {
-        window.location.href = "/result?keyword=${result.keyword}&pageIndex="+page_id;
+        window.location.href = "/result?startDate=${result.startDate}&endDate=${result.endDate}&keyword=${result.keyword}&pageIndex="+page_id;
 		// alert("当前页id(由0开始)：" + page_id + "，\n每页显示：" + this.items_per_page + "条数据");
 	}
 	
@@ -112,14 +108,11 @@
             readonly: true,                                       // 目标对象是否设为只读，默认：true
             upperLimit: new Date(),                               // 日期上限，默认：NaN(不限制)
             lowerLimit: new Date("2011/01/01"),                   // 日期下限，默认：NaN(不限制)
-            callback: function () {                               // 点击选择日期后的回调函数
-                alert("您选择的日期是：" + $("#txtBeginDate").val());
-            }
-
+            // callback: function () {                               // 点击选择日期后的回调函数
+            //     alert("您选择的日期是：" + $("#txtBeginDate").val());
+            // }
         });
-
         $("#txtEndDate").calendar();
-
     });
 
 	function reset() {

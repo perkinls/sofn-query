@@ -10,7 +10,6 @@
 <link href="${pageContext.request.contextPath}/resource/css/style.css" rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath}/resource/css/result.css" rel="stylesheet" type="text/css" />
     <link href="${pageContext.request.contextPath}/resource/css/lyz.calendar.css" rel="stylesheet" type="text/css" />
-
 </head>
 <body>
 <div id="container">
@@ -23,7 +22,6 @@
             <%--<a class="advanced" href="/advanced.html">高级搜索</a>--%>
         </div>
     </div>
-
 	<div id="bd" class="ue-clear">
         <div id="main">
             <div class="datesearch">
@@ -63,15 +61,16 @@
     </div><!--End of bd-->
 </div>
 </body>
-<%--<script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/jquery.js"></script>--%>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/jquery-1.5.1.js"></script>
+<script type="text/javascript" src=".${pageContext.request.contextPath}/resource/js/jquery-1.5.1.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/global.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/pagination.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/search.js"></script>
 <script src="${pageContext.request.contextPath}/resource/js/lyz.calendar.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 
-
+	
+	
+	
 	$.each($('.subfieldContext'), function(i, item){
 		$(this).find('li:gt(2)').hide().end().find('li:last').show();		
 	});
@@ -98,6 +97,12 @@
 			$('#container').height($(window).height()-33);
 		}	
 	}
+
+    $("body").keydown(function() {
+        if (event.keyCode == "13") {//keyCode=13是回车键
+            $('#searchES').click();
+        }
+    });
 
     $(function () {
         $("#txtBeginDate").calendar({

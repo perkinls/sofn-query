@@ -19,6 +19,7 @@ import org.elasticsearch.search.SearchHit;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.*;
@@ -93,16 +94,25 @@ public class HelloWebService {
         return replaceObj;
     }
 
-    public List<Object> searchES(String keyword, int pageIndex) {
+    public Map searchES(String keyword, int pageIndex) {
+        Map result = new HashMap();
+        long indexCount = 0;
+        long recordCount = 0;
+
         //先去redis缓存查找
         if (jedis.exists(REDIS_KEY_KEYWORD_PREFIX + keyword)) {
             jedis.expire(REDIS_KEY_KEYWORD_PREFIX + keyword, REDIS_KEYWORD_EXPIRE_SECONDS);
             List<String> redisRes = jedis.lrange(REDIS_KEY_KEYWORD_PREFIX + keyword, pageIndex * pageSize, pageIndex * pageSize + pageSize - 1);
-            return parseObj(redisRes, keyword);
+            result.put("list", parseObj(redisRes, keyword));
+            result.put("indexCount",jedis.llen(REDIS_KEY_KEYWORD_PREFIX + keyword));
+            for(String info:jedis.lrange(REDIS_KEY_KEYWORD_PREFIX + keyword,0,-1)){
+                recordCount += JSONObject.parseObject(info).getJSONArray("records").size();
+            }
+            result.put("recordCount",recordCount);
+            return result;
         }
 
         QueryBuilder query = QueryBuilders.queryStringQuery(keyword).defaultOperator(Operator.AND);
-        List list = new ArrayList<>();
         for (String indexName : indices) {
             SearchResponse response = client.prepareSearch(indexName)
                     .setQuery(query)
@@ -113,20 +123,56 @@ public class HelloWebService {
             JSONObject curr = new JSONObject();
             List records = new ArrayList();
             for (SearchHit hit : response.getHits()) {
-                records.add(hit.getSourceAsString());
+                if(judgeResourceContainKeyword(keyword,hit.getSourceAsMap())){
+                    records.add(hit.getSourceAsString());
+                }
             }
+            if(records.size() == 0) continue;
+            indexCount++;
+            recordCount += records.size();
             curr.put("indexName", indexName);
             curr.put("records", records);
+            curr.put("oneIndexCount",records.size());
             curr.put("tableName", jedis.get(REDIS_KEY_TABLE_PREFIX + indexName));
-
-            list.add(curr);
             jedis.rpush(REDIS_KEY_KEYWORD_PREFIX + keyword, curr.toJSONString());
         }
         jedis.expire(REDIS_KEY_KEYWORD_PREFIX + keyword, REDIS_KEYWORD_EXPIRE_SECONDS);
         List<String> redisRes = jedis.lrange(REDIS_KEY_KEYWORD_PREFIX + keyword, pageIndex * pageSize, pageIndex * pageSize + pageSize - 1);
-        return parseObj(redisRes, keyword);
+        result.put("list", parseObj(redisRes, keyword));
+        result.put("recordCount",recordCount);
+        result.put("indexCount",indexCount);
+        return result;
     }
 
+    /**
+     * 能够找到关键字的索引库个数
+     * @param keyword
+     * @return
+     */
+    public long keywordIndexCount(String keyword) {
+        return jedis.llen(REDIS_KEY_KEYWORD_PREFIX + keyword);
+    }
+
+    /**
+     * 判断resource信息是否直接包含关键字
+     * @param keyword
+     * @param resourceMap
+     * @return
+     */
+    public boolean judgeResourceContainKeyword(String keyword, Map<String,Object> resourceMap){
+        for(Object obj:resourceMap.values()){
+            if(obj != null && obj.toString().contains(keyword)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 能够找到关键字的总记录数
+     * @param keyword
+     * @return
+     */
     public long keywordRecordCount(String keyword) {
         return jedis.llen(REDIS_KEY_KEYWORD_PREFIX + keyword);
     }
@@ -137,8 +183,8 @@ public class HelloWebService {
      * @param jsonInfo
      * @return
      */
-    private List<Object> parseObj(List<String> jsonInfo, String keyword) {
-        List<Object> list = new ArrayList<>();
+    private List<JSONObject> parseObj(List<String> jsonInfo, String keyword) {
+        List<JSONObject> list = new ArrayList<>();
         for (String str : jsonInfo) {
             JSONObject eachObject = JSONObject.parseObject(str);
             String indexName = eachObject.getString("indexName");
@@ -156,9 +202,11 @@ public class HelloWebService {
                 showObj.put(keyword2key,record.get(keyword2key));
                 for(String key:keys){
                     Object value = record.get(key);
-                    if(value!=null && !StringUtils.isEmpty(value.toString()) && keyword2key.equals(key)){
+                    if(value!=null && !StringUtils.isEmpty(value.toString()) && !keyword2key.equals(key)){
                         showObj.put(key,value);
-                        if(showObj.size()>3)    break;
+                    }
+                    if(showObj.size()>3) {
+                        break;
                     }
                 }
                 JSONObject replaceObj = replaceKeyUseCHN(indexName, showObj);

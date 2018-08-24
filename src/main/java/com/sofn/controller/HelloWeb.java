@@ -1,13 +1,17 @@
 package com.sofn.controller;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.sofn.service.HelloWebService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,10 +44,10 @@ public class HelloWeb {
         Map result = new HashMap();
 
         //查询ES索引库
-        List list = helloWebService.searchES(keyword, pageIndex);
-        long totalSize = helloWebService.keywordRecordCount(keyword);
-        result.put("list",list);
-        result.put("totalSize",totalSize);
+        Map searchResult = helloWebService.searchES(keyword, pageIndex);
+        result.put("list",searchResult.get("list"));
+        result.put("indexCount",searchResult.get("indexCount"));
+        result.put("recordCount",searchResult.get("recordCount"));
         result.put("keyword",keyword);
         result.put("pageIndex",pageIndex);
         model.addAttribute("result",result);

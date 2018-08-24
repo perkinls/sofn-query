@@ -9,6 +9,8 @@
 <title>Uimaker-专注UI设计</title>
 <link href="${pageContext.request.contextPath}/resource/css/style.css" rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath}/resource/css/result.css" rel="stylesheet" type="text/css" />
+    <link href="${pageContext.request.contextPath}/resource/css/lyz.calendar.css" rel="stylesheet" type="text/css" />
+
 </head>
 <body>
 <div id="container">
@@ -17,11 +19,16 @@
         <div class="inputArea">
         	<input type="text" class="searchInput" id="keyword"/>
             <input type="button" class="searchButton" onclick="searchKeyword($('#keyword').val());"/>
-            <%--<a class="advanced" href="/advanced.html">高级搜索</a>--%>
         </div>
     </div>
+
 	<div id="bd" class="ue-clear">
         <div id="main">
+            <div class="datesearch">
+                日期选择：<input id="txtBeginDate" style="width:120px;border:1px solid #ccc;"/>
+                -- <input id="txtEndDate" style="width:120px;border:1px solid #ccc;" />
+                <button id="reset" type="reset" onclick="reset()" >重置</button>
+            </div>
             <div class="resultArea">
                 <p class="resultTotal">
                     <span class="info">共找到&nbsp;<span class="totalResult">${result.totalSize}</span>&nbsp;条记录</span>
@@ -52,15 +59,15 @@
     </div><!--End of bd-->
 </div>
 </body>
-<script type="text/javascript" src=".${pageContext.request.contextPath}/resource/js/jquery.js"></script>
+<%--<script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/jquery.js"></script>--%>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/jquery-1.5.1.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/global.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/pagination.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/search.js"></script>
+<script src="${pageContext.request.contextPath}/resource/js/lyz.calendar.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 
-	
-	
-	
+
 	$.each($('.subfieldContext'), function(i, item){
 		$(this).find('li:gt(2)').hide().end().find('li:last').show();		
 	});
@@ -87,5 +94,27 @@
 			$('#container').height($(window).height()-33);
 		}	
 	}
+
+    $(function () {
+        $("#txtBeginDate").calendar({
+            controlId: "divDate",                                 // 弹出的日期控件ID，默认: $(this).attr("id") + "Calendar"
+            speed: 200,                                           // 三种预定速度之一的字符串("slow", "normal", or "fast")或表示动画时长的毫秒数值(如：1000),默认：200
+            complement: true,                                     // 是否显示日期或年空白处的前后月的补充,默认：true
+            readonly: true,                                       // 目标对象是否设为只读，默认：true
+            upperLimit: new Date(),                               // 日期上限，默认：NaN(不限制)
+            lowerLimit: new Date("2011/01/01"),                   // 日期下限，默认：NaN(不限制)
+            callback: function () {                               // 点击选择日期后的回调函数
+                alert("您选择的日期是：" + $("#txtBeginDate").val());
+            }
+
+        });
+
+        $("#txtEndDate").calendar();
+
+    });
+
+	function reset() {
+        //TODO
+    }
 </script>
 </html>

@@ -21,7 +21,7 @@
             <div class="inputArea">
             	<input type="text" class="searchInput" id="keyword"/>
                 <%--<input type="button" class="searchButton" onclick="javascript:window.location='/result.html'" />--%>
-                <input type="button" class="searchButton" onclick="searchKeyword($('#keyword').val());" />
+                <input type="button" id = "searchES" class="searchButton" onclick="searchKeyword($('#keyword').val());" />
                 <%--<a class="advanced" href="/advanced.html">高级搜索</a>--%>
             </div>
         </div><!-- End of main -->
@@ -37,7 +37,11 @@
 		$('.searchList .searchItem').removeClass('current');
 		$(this).addClass('current');	
 	});
-
+    $("body").keydown(function() {
+        if (event.keyCode == "13") {//keyCode=13是回车键
+            $('#searchES').click();
+        }
+    });
 
 </script>
 </html>

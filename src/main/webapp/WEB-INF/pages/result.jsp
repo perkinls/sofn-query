@@ -19,6 +19,8 @@
         <div class="inputArea">
         	<input type="text" class="searchInput" id="keyword"/>
             <input type="button" class="searchButton" onclick="searchKeyword($('#keyword').val());"/>
+            <input type="button" id="searchES" class="searchButton" onclick="searchKeyword($('#keyword').val());"/>
+            <%--<a class="advanced" href="/advanced.html">高级搜索</a>--%>
         </div>
     </div>
 
@@ -31,18 +33,20 @@
             </div>
             <div class="resultArea">
                 <p class="resultTotal">
-                    <span class="info">共找到&nbsp;<span class="totalResult">${result.totalSize}</span>&nbsp;条记录</span>
+                    <span class="info">共匹配到&nbsp;<span class="totalResult">${result.indexCount}</span>&nbsp;张表&nbsp;</span>
+                    <span class="info">总共有&nbsp;<span class="totalResult">${result.recordCount}</span>&nbsp;条记录</span>
                 </p>
                 <div class="resultList">
                     <c:forEach items="${result.list }" varStatus="status" var="hit">
                         <div class="resultItem">
                             <div class="itemHead">
-                                <a href="/detail?keyword=${result.keyword}&index=${status.index}&pageIndex=${result.pageIndex}"  target="_blank" class="title"><span>表名：${hit.tableName}</span></a>
+                                <a href="/detail?keyword=${result.keyword}&index=${status.index}&pageIndex=${result.pageIndex}"  target="_blank" class="title"><span>${hit.tableName}</span></a>
                                 <span class="divsion">-</span>
                                 <span class="fileType">
                             	    <span class="label">索引库：</span>
-                                    <span class="value"> ${hit.indexName}</span>
+                                    <span class="value"> ${hit.indexName}, 共${hit.oneIndexCount}条记录</span>
                                 </span>
+                                <input type="checkbox" id="${hit.indexName}"><label for="${hit.indexName}">导出</label>
                             </div>
                             <div class="itemBody">
                                 <c:forEach items="${hit.showRecords }" var="record">
@@ -73,7 +77,7 @@
 	});
 	
 	//分页
-	$(".pagination").pagination(${result.totalSize}, {
+	$(".pagination").pagination(${result.indexCount}, {
 		current_page :${result.pageIndex}?${result.pageIndex}:0, //当前页码
 		items_per_page :10,
 		display_msg :true,
@@ -116,5 +120,11 @@
 	function reset() {
         //TODO
     }
+
+    $("body").keydown(function() {
+        if (event.keyCode == "13") {//keyCode=13是回车键
+            $('#searchES').click();
+        }
+    });
 </script>
 </html>

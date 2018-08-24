@@ -42,6 +42,7 @@ public class HelloWebService {
 
     public Map getRecordsByIndex(String keyword, int index, int pageIndex, String startDate, String endDate) {
         index = pageIndex*pageSize+index;
+        //拿去指定索引里对应的信息
         String currMapInfo = null;
         try{
             currMapInfo = jedis.lrange(REDIS_KEY_KEYWORD_PREFIX+keyword,index,index).get(0);
@@ -114,7 +115,10 @@ public class HelloWebService {
             return result;
         }
 
+        //构建关键字查询的条件
         QueryBuilder query = QueryBuilders.queryStringQuery(keyword).defaultOperator(Operator.AND);
+        List list = new ArrayList<>();
+        //遍历es中所有索引
         for (String indexName : indices) {
             SearchResponse response = client.prepareSearch(indexName)
                     .setQuery(query)
@@ -131,16 +135,23 @@ public class HelloWebService {
                 if(!isValidDateRange(startDate,endDate,hit.getSourceAsMap()))  continue;
                 records.add(hit.getSourceAsString());
             }
+            //封装成一个JSON对象
             if(records.size() == 0) continue;
             indexCount++;
             recordCount += records.size();
             curr.put("indexName", indexName);
             curr.put("records", records);
+            curr.put("tableName", jedis.get(REDIS_KEY_TABLE_PREFIX + indexName));//从redis中获取中文的索引库名
+
+            list.add(curr);
+            //对于关键字搜索到的结果使用追加的方式保存起来
             curr.put("oneIndexCount",records.size());
             curr.put("tableName", jedis.get(REDIS_KEY_TABLE_PREFIX + indexName));
             jedis.rpush(REDIS_KEY_KEYWORD_PREFIX + keyword, curr.toJSONString());
         }
+        //进行持久化操作 expire
         jedis.expire(REDIS_KEY_KEYWORD_PREFIX + keyword, REDIS_KEYWORD_EXPIRE_SECONDS);
+        //redis中分页查询
         List<String> redisRes = jedis.lrange(REDIS_KEY_KEYWORD_PREFIX + keyword, pageIndex * pageSize, pageIndex * pageSize + pageSize - 1);
         result.put("list", parseObj(redisRes, keyword));
         result.put("recordCount",recordCount);

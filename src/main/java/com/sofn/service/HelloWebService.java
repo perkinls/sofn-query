@@ -1,6 +1,5 @@
 package com.sofn.service;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.sofn.utils.ESUtil;
@@ -22,6 +21,7 @@ import redis.clients.jedis.Jedis;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service("helloWebService")
@@ -33,19 +33,21 @@ public class HelloWebService {
     private static final String REDIS_KEY_KEYWORD_PREFIX = "KEYWORD:";
     private static final int REDIS_KEYWORD_EXPIRE_SECONDS = 300; //5分钟过期
 
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private static List<String> date_fields = null;
     private static List<String> indices = null; //保存es的所有索引库名
     private static TransportClient client;
     private static Jedis jedis;
 
 
-    public Map getRecordsByIndex(String keyword, int index, int pageIndex) {
+    public Map getRecordsByIndex(String keyword, int index, int pageIndex, String startDate, String endDate) {
         index = pageIndex*pageSize+index;
         String currMapInfo = null;
         try{
             currMapInfo = jedis.lrange(REDIS_KEY_KEYWORD_PREFIX+keyword,index,index).get(0);
         }catch (Exception e){
             //异常原因可能是key已经过期，需要重新查询
-            searchES(keyword, pageIndex);
+            searchES(keyword, pageIndex, startDate, endDate);
             currMapInfo = jedis.lrange(REDIS_KEY_KEYWORD_PREFIX+keyword,index,index).get(0);
         }
 
@@ -94,7 +96,7 @@ public class HelloWebService {
         return replaceObj;
     }
 
-    public Map searchES(String keyword, int pageIndex) {
+    public Map searchES(String keyword, int pageIndex, String startDate, String endDate) {
         Map result = new HashMap();
         long indexCount = 0;
         long recordCount = 0;
@@ -123,9 +125,11 @@ public class HelloWebService {
             JSONObject curr = new JSONObject();
             List records = new ArrayList();
             for (SearchHit hit : response.getHits()) {
-                if(judgeResourceContainKeyword(keyword,hit.getSourceAsMap())){
-                    records.add(hit.getSourceAsString());
-                }
+                //过滤掉不包含连续关键字的结果
+                if(!judgeResourceContainKeyword(keyword,hit.getSourceAsMap()))  continue;
+                //过滤掉不在日期范围内的结果
+                if(!isValidDateRange(startDate,endDate,hit.getSourceAsMap()))  continue;
+                records.add(hit.getSourceAsString());
             }
             if(records.size() == 0) continue;
             indexCount++;
@@ -169,14 +173,38 @@ public class HelloWebService {
     }
 
     /**
-     * 能够找到关键字的总记录数
-     * @param keyword
-     * @return
+     * 判断是否在有效时间范围内
      */
-    public long keywordRecordCount(String keyword) {
-        return jedis.llen(REDIS_KEY_KEYWORD_PREFIX + keyword);
-    }
+    public boolean isValidDateRange(String startDateInfo,String endDateInfo, Map<String,Object> resourceMap){
+        //不考虑时间范围
+        if(startDateInfo == null && endDateInfo == null){
+            return true;
+        }
 
+        boolean result = true;
+        try {
+            Date startDate = startDateInfo == null ? null: sdf.parse(startDateInfo);
+            Date endDate = endDateInfo == null? null : sdf.parse(endDateInfo);
+            if(null != endDate) endDate.setDate(endDate.getDate()+1);
+
+            for(Map.Entry<String,Object> entry:resourceMap.entrySet()){
+                String key = entry.getKey();
+                if(key.endsWith("time") || key.endsWith("date")){
+                    for(String dateField: date_fields){
+                        if(dateField.equals(entry.getKey()) && entry.getValue() != null){
+                            Date currDate = sdf.parse(entry.getValue().toString());
+                            if(startDate != null)   result=result&&currDate.after(startDate);
+                            if(endDate != null)     result=result&&currDate.before(endDate);
+                            return result;
+                        }
+                    }
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     /**
      * 解析
@@ -244,6 +272,7 @@ public class HelloWebService {
         loadTableInfo();
         loadTableFieldInfo();
         loadIndices();
+        loadDateFields();
     }
 
 
@@ -288,15 +317,39 @@ public class HelloWebService {
 
     /**
      * 加载索引库的所有索引名
-     *
-     * @return
      */
-    private static List<String> loadIndices() {
+    private static void loadIndices() {
         if (null == indices) {
             ActionFuture<IndicesStatsResponse> isr = client.admin().indices().stats(new IndicesStatsRequest().all());
             Set<String> set = isr.actionGet().getIndices().keySet();
             indices = new ArrayList<String>(set);
         }
-        return indices;
+    }
+
+    private static void loadDateFields(){
+        if(null == date_fields){
+            date_fields = new ArrayList<String>();
+            date_fields.add("create_date");
+            date_fields.add("create_time");
+            date_fields.add("inspection_time");
+            date_fields.add("approve_time");
+            date_fields.add("register_time");
+            date_fields.add("cred_time");
+            date_fields.add("check_time");
+            date_fields.add("confirm_time");
+            date_fields.add("task_date");
+            date_fields.add("produce_date");
+            date_fields.add("sample_date");
+            date_fields.add("check_report_time");
+            date_fields.add("report_time");
+            date_fields.add("sample_report_time");
+            date_fields.add("upload_time");
+            date_fields.add("receipt_time");
+            date_fields.add("enforce_law_time");
+            date_fields.add("sale_time");
+            date_fields.add("print_time");
+            date_fields.add("createtime");
+            date_fields.add("createdate");
+        }
     }
 }

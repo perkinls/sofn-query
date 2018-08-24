@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=emulateIE7" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Uimaker-专注UI设计</title>
+<title>国家农产品信息库</title>
 <link href="${pageContext.request.contextPath}/resource/css/style.css" rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath}/resource/css/result.css" rel="stylesheet" type="text/css" />
     <link href="${pageContext.request.contextPath}/resource/css/lyz.calendar.css" rel="stylesheet" type="text/css" />
@@ -38,7 +38,7 @@
                     <c:forEach items="${result.list }" varStatus="status" var="hit">
                         <div class="resultItem">
                             <div class="itemHead">
-                                <a href="/detail?startDate=${result.startDate}&endDate=${result.endDate}&keyword=${result.keyword}&index=${status.index}&pageIndex=${result.pageIndex}"  target="_blank" class="title"><span>${hit.tableName}</span></a>
+                                <a href="${pageContext.request.contextPath}/detail?startDate=${result.startDate}&endDate=${result.endDate}&keyword=${result.keyword}&index=${status.index}&pageIndex=${result.pageIndex}"  target="_blank" class="title"><span>${hit.tableName}</span></a>
                                 <span class="divsion">-</span>
                                 <span class="fileType">
                             	    <span class="label">索引库：</span>
@@ -61,10 +61,9 @@
     </div><!--End of bd-->
 </div>
 </body>
-<script type="text/javascript" src=".${pageContext.request.contextPath}/resource/js/jquery-1.5.1.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/jquery-1.5.1.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/global.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/pagination.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/search.js"></script>
 <script src="${pageContext.request.contextPath}/resource/js/lyz.calendar.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 	$.each($('.subfieldContext'), function(i, item){
@@ -79,7 +78,7 @@
 		callback :pageselectCallback
 	});
 	function pageselectCallback(page_id, jq) {
-        window.location.href = "/result?startDate=${result.startDate}&endDate=${result.endDate}&keyword=${result.keyword}&pageIndex="+page_id;
+        window.location.href = "${pageContext.request.contextPath}/result?startDate=${result.startDate}&endDate=${result.endDate}&keyword=${result.keyword}&pageIndex="+page_id;
 		// alert("当前页id(由0开始)：" + page_id + "，\n每页显示：" + this.items_per_page + "条数据");
 	}
 	
@@ -128,5 +127,19 @@
             $('#searchES').click();
         }
     });
+
+    function searchKeyword(keyword,startDate,endDate) {
+        if(""==keyword||""==keyword.trim()){
+            return;
+        }
+        if(!startDate){
+            startDate="";
+        }
+        if(!endDate){
+            endDate="";
+        }
+        window.location.href = "${pageContext.request.contextPath}/result?keyword="+keyword+"&startDate="+startDate+"&endDate="+endDate;
+    }
+
 </script>
 </html>

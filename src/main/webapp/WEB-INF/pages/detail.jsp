@@ -3,7 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
-    <title></title>
+    <title>搜索详情页</title>
     <script type="text/javascript">
         var jsonArray = ${currMap.records};
         var headArray = [];

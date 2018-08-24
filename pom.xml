@@ -135,7 +135,7 @@
   </dependencies>
 
   <build>
-    <finalName>bigdata-test2</finalName>
+    <finalName>sofn-query</finalName>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

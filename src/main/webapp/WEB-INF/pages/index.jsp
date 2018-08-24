@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=emulateIE7" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Uimaker-专注UI设计</title>
+<title>国家农产品信息库</title>
 <link href="${pageContext.request.contextPath}/resource/css/style.css" rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath}/resource/css/index.css" rel="stylesheet" type="text/css" />
 </head>
@@ -31,7 +31,6 @@
 </body>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/jquery.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/global.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/search.js"></script>
 <script type="text/javascript">
 	$('.searchList').on('click', '.searchItem', function(){
 		$('.searchList .searchItem').removeClass('current');
@@ -43,5 +42,17 @@
         }
     });
 
+    function searchKeyword(keyword,startDate,endDate) {
+        if(""==keyword||""==keyword.trim()){
+            return;
+        }
+        if(!startDate){
+            startDate="";
+        }
+        if(!endDate){
+            endDate="";
+        }
+        window.location.href = "${pageContext.request.contextPath}/result?keyword="+keyword+"&startDate="+startDate+"&endDate="+endDate;
+    }
 </script>
 </html>

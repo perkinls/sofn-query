@@ -1,7 +1,5 @@
 package com.sofn.utils;
 
-import java.util.Date;
-
 public class StringUtils {
     public static boolean isEmpty(String str){
         if(null == str){
@@ -15,14 +13,4 @@ public class StringUtils {
         }
         return false;
     }
-
-    public static void main(String[] args){
-        long l1 = System.currentTimeMillis()-1000;
-        Date date1 = new Date();
-        Date date2 = new Date(l1);
-        System.out.println(date1.before(date2));
-        System.out.println(date1.getDate());
-        date1.setDate(date1.getDate()+1);
-        System.out.println(date1.getDate());
-     }
 }

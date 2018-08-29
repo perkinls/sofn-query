@@ -46,13 +46,29 @@
         if(""==keyword||""==keyword.trim()){
             return;
         }
-        if(!startDate){
-            startDate="";
-        }
-        if(!endDate){
-            endDate="";
-        }
-        window.location.href = "${pageContext.request.contextPath}/result?keyword="+keyword+"&startDate="+startDate+"&endDate="+endDate;
+
+        //如果未定义，初始化为空字符串
+        if(!startDate)  startDate="";
+        if(!endDate)    endDate="";
+
+        <%--$.ajax({--%>
+            <%--url: "${pageContext.request.contextPath}/result",--%>
+            <%--content-type()--%>
+            <%--data:--%>
+                <%--{--%>
+                    <%--'keyword': keyword,--%>
+                    <%--"startDate":startDate,--%>
+                    <%--"endDate": endDate,--%>
+                    <%--"pageIndex":0--%>
+                <%--},--%>
+            <%--success: function(data){--%>
+                <%--//location.href="${pageContext.request.contextPath}"+data.filePath;--%>
+            <%--},--%>
+            <%--error: function(xhr,status,errMsg){--%>
+                <%--alert("操作失败!");--%>
+            <%--}--%>
+        <%--});--%>
+        window.location.href = "${pageContext.request.contextPath}/result?keyword="+keyword+"&startDate="+startDate+"&endDate="+endDate+"&pageIndex="+0;
     }
 </script>
 </html>

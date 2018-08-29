@@ -7,8 +7,9 @@
     <script type="text/javascript">
         var jsonArray = ${currMap.records};
         var headArray = [];
+        let eng2chn = ${currMap.eng2chn};
         function parseHead(oneRow) {
-            for ( var i in oneRow) {
+            for (var i in oneRow) {
                 headArray[headArray.length] = i;
             }
         }
@@ -19,7 +20,7 @@
             var thead = document.createElement("tr");
             for ( var count = 0; count < headArray.length; count++) {
                 var td = document.createElement("th");
-                td.innerHTML = headArray[count];
+                td.innerHTML = eng2chn[headArray[count]];
                 thead.appendChild(td);
             }
             table.appendChild(thead);

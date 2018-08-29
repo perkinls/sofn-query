@@ -26,9 +26,4 @@ public class RedisUtil {
         config.setTestOnBorrow(false);
         jedisPool = new JedisPool(config,ip,port);
     }
-
-    public static void main(String[] args){
-        Jedis jedis = getJedis();
-        System.out.println(jedis.get("TABLE_INFO: "+"ales_task_sample"));
-    }
 }
